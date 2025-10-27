@@ -36,30 +36,35 @@ export const UploadStep: React.FC<UploadStepProps> = ({
     checkServer()
   }, [])
 
-  const progressSteps = [
+  const progressSteps: Array<{
+    id: string
+    title: string
+    description: string
+    status: 'current' | 'pending' | 'completed' | 'error'
+  }> = [
     {
       id: 'file-selection',
       title: 'ファイル選択',
       description: 'Excelファイルを選択またはドラッグ&ドロップ',
-      status: uploadedFile ? 'completed' : 'current' as const
+      status: uploadedFile ? 'completed' : 'current'
     },
     {
       id: 'file-validation',
       title: 'ファイル検証',
       description: 'ファイル形式とサイズをチェック',
-      status: uploadedFile && !isLoading ? 'completed' : uploadedFile && isLoading ? 'current' : 'pending' as const
+      status: uploadedFile && !isLoading ? 'completed' : uploadedFile && isLoading ? 'current' : 'pending'
     },
     {
       id: 'upload',
       title: 'アップロード',
       description: 'サーバーにファイルを送信中',
-      status: isLoading ? 'current' : uploadedFile ? 'completed' : 'pending' as const
+      status: isLoading ? 'current' : uploadedFile ? 'completed' : 'pending'
     },
     {
       id: 'processing',
       title: 'データ処理',
       description: 'ファイル内容を解析中',
-      status: isLoading ? 'current' : 'pending' as const
+      status: isLoading ? 'current' : 'pending'
     }
   ]
 
