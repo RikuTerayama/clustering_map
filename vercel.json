@@ -1,12 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "api/vercel_adapter.py": {
-      "runtime": "python3.11",
-      "memory": 1024,
-      "maxDuration": 30
-    }
-  },
   "buildCommand": "cd clustering-map-frontend && npm run build",
   "outputDirectory": "clustering-map-frontend/dist",
   "installCommand": "cd clustering-map-frontend && npm install"
