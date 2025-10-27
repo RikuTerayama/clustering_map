@@ -182,8 +182,6 @@ export const UploadStep: React.FC<UploadStepProps> = ({
       {(uploadedFile || isLoading) && (
         <ProgressIndicator
           steps={progressSteps}
-          currentStep={isLoading ? 'upload' : 'file-selection'}
-          error={error || undefined}
         />
       )}
 
