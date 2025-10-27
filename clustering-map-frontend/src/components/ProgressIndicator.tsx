@@ -10,14 +10,10 @@ interface ProgressStep {
 
 interface ProgressIndicatorProps {
   steps: ProgressStep[]
-  currentStep: string
-  error?: string
 }
 
 export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
-  steps,
-  currentStep,
-  error
+  steps
 }) => {
   const getStepIcon = (step: ProgressStep) => {
     if (step.status === 'completed') {
@@ -71,20 +67,6 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
           </div>
         ))}
       </div>
-
-      {error && (
-        <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <Circle className="w-5 h-5 text-red-500" />
-            </div>
-            <div className="ml-3">
-              <h4 className="text-sm font-medium text-red-800">エラーが発生しました</h4>
-              <p className="text-sm text-red-600 mt-1">{error}</p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
