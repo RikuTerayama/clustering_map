@@ -1,20 +1,18 @@
 """
 Vercel Serverless Functions entry point
+Simple handler that imports the FastAPI app
 """
 import sys
 from pathlib import Path
 
-# Vercel上でのパス設定
+# Add backend to Python path
 backend_path = Path(__file__).parent.parent / 'clustering-map-backend'
 sys.path.insert(0, str(backend_path))
 
+# Import FastAPI app
 from app.main import app
 from mangum import Mangum
 
-# Mangumを使用してFastAPIアプリをVercel対応
+# Create Mangum handler
 handler = Mangum(app)
-
-def lambda_handler(event, context):
-    """Vercel/Lambda互換ハンドラ"""
-    return handler(event, context)
 
