@@ -1,0 +1,9 @@
+{
+  "name": "clustering-map-api",
+  "version": "1.0.0",
+  "description": "Clustering Map API for Vercel",
+  "scripts": {
+    "build": "echo 'No build step required for Python serverless functions'"
+  }
+}
+
