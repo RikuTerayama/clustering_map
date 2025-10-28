@@ -266,32 +266,20 @@ async def analyze_data(request: AnalysisRequest):
 
 @app.get("/export/pdf")
 async def export_pdf():
-    """PDFエクスポート"""
-    try:
-        pdf_path = export_service.export_to_pdf()
-        return FileResponse(
-            pdf_path,
-            media_type="application/pdf",
-            filename="clustering_map.pdf"
-        )
-    except Exception as e:
-        logger.error(f"PDF export failed: {e}")
-        raise HTTPException(status_code=500, detail=f"PDFエクスポート中にエラーが発生しました: {str(e)}")
+    """PDFエクスポート（Vercelでは無効化）"""
+    raise HTTPException(
+        status_code=503, 
+        detail="PDF export is not available on Vercel Serverless Functions due to package size constraints"
+    )
 
 
 @app.get("/export/png")
 async def export_png():
-    """PNGエクスポート"""
-    try:
-        png_path = export_service.export_to_png()
-        return FileResponse(
-            png_path,
-            media_type="image/png",
-            filename="clustering_map.png"
-        )
-    except Exception as e:
-        logger.error(f"PNG export failed: {e}")
-        raise HTTPException(status_code=500, detail=f"PNGエクスポート中にエラーが発生しました: {str(e)}")
+    """PNGエクスポート（Vercelでは無効化）"""
+    raise HTTPException(
+        status_code=503, 
+        detail="PNG export is not available on Vercel Serverless Functions due to package size constraints"
+    )
 
 
 @app.get("/tags")
