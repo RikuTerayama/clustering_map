@@ -1,5 +1,4 @@
 import os
-import pandas as pd
 from typing import List, Dict, Any, Optional
 from pathlib import Path
 import logging
@@ -7,9 +6,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def read_excel_file(file_path: str) -> pd.DataFrame:
+def read_excel_file(file_path: str):
     """Excelファイルを読み込む"""
     try:
+        # 遅延インポートでファイルサイズを削減
+        import pandas as pd
         # 複数のシートがある場合は最初のシートを読み込み
         df = pd.read_excel(file_path, engine='openpyxl')
         logger.info(f"Excel file loaded successfully: {len(df)} rows, {len(df.columns)} columns")
@@ -19,7 +20,7 @@ def read_excel_file(file_path: str) -> pd.DataFrame:
         raise ValueError(f"Excelファイルの読み込みに失敗しました: {e}")
 
 
-def validate_excel_columns(df: pd.DataFrame, required_columns: List[str]) -> bool:
+def validate_excel_columns(df, required_columns: List[str]) -> bool:
     """Excelファイルの列を検証"""
     missing_columns = [col for col in required_columns if col not in df.columns]
     if missing_columns:
@@ -27,7 +28,7 @@ def validate_excel_columns(df: pd.DataFrame, required_columns: List[str]) -> boo
     return True
 
 
-def get_sample_data(df: pd.DataFrame, n_rows: int = 5) -> List[Dict[str, Any]]:
+def get_sample_data(df, n_rows: int = 5) -> List[Dict[str, Any]]:
     """サンプルデータを取得"""
     sample_df = df.head(n_rows)
     return sample_df.to_dict('records')
