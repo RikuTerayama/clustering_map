@@ -1,10 +1,5 @@
-import pandas as pd
-import numpy as np
 from typing import List, Dict, Any, Optional, Tuple
 import logging
-from sklearn.cluster import KMeans
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 import json
 import os
 from pathlib import Path
@@ -47,6 +42,11 @@ class SimpleAnalysisService:
                 "料金体系が複雑で分かりにくいです。シンプルにしてほしい。",
                 "カスタマーサポートの対応が素晴らしいです。"
             ]
+            
+            # 遅延インポートでファイルサイズを削減
+            from sklearn.cluster import KMeans
+            from sklearn.feature_extraction.text import TfidfVectorizer
+            import numpy as np
             
             n_clusters = min(5, len(texts) // 3) if len(texts) > 3 else 1
             logger.info(f"Number of clusters: {n_clusters}")
