@@ -1,0 +1,30 @@
+# ビルド成果物
+node_modules/
+dist/
+*.pyc
+__pycache__/
+*.egg-info/
+
+# ドキュメント
+*.md
+!README.md
+
+# テスト
+tests/
+test_*.py
+
+# 開発用
+.env
+.env.*
+.vscode/
+.idea/
+
+# データ
+data/
+logs/
+tmp/
+
+# 古い構成
+app/
+frontend/
+
