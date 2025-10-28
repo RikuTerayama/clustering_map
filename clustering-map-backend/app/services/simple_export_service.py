@@ -21,69 +21,23 @@ class SimpleExportService:
     
     def export_pdf(self, data_points: List[DataPoint], output_path: str, title: str = "Clustering Map") -> bool:
         """PDFエクスポート（軽量版 - 無効化）"""
-        try:
-            # Vercel Serverless Functionsでは重いライブラリを削除
-            logger.warning("PDF export is disabled on Vercel to reduce package size")
-            return False
-            
-            # PDFとして保存
-            plt.savefig(output_path, format='pdf', dpi=300, bbox_inches='tight')
-            plt.close()
-            
-            logger.info(f"PDF exported successfully: {output_path}")
-            return True
-            
-        except Exception as e:
-            logger.error(f"PDF export failed: {e}")
-            return False
+        logger.warning("PDF export is disabled on Vercel to reduce package size")
+        return False
     
     def export_png(self, data_points: List[DataPoint], output_path: str, title: str = "Clustering Map") -> bool:
         """PNGエクスポート（軽量版 - 無効化）"""
-        try:
-            logger.warning("PNG export is disabled on Vercel to reduce package size")
-            return False
+        logger.warning("PNG export is disabled on Vercel to reduce package size")
+        return False
 
     def export_to_pdf(self) -> str:
-        """PDFエクスポート（引数なし版）"""
-        try:
-            # ダミーデータを生成
-            data_points = self._generate_dummy_data()
-            
-            # 出力パスを生成
-            output_path = os.path.join(self.config.results_dir, f"clustering_map_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf")
-            os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            
-            # PDFエクスポート
-            success = self.export_pdf(data_points, output_path, "Clustering Map")
-            if success:
-                return output_path
-            else:
-                raise Exception("PDF export failed")
-                
-        except Exception as e:
-            logger.error(f"PDF export failed: {e}")
-            raise Exception(f"PDFエクスポートに失敗しました: {str(e)}")
+        """PDFエクスポート（引数なし版 - 無効化）"""
+        logger.warning("PDF export is disabled on Vercel to reduce package size")
+        raise Exception("PDF export is not supported on Vercel Serverless Functions")
 
     def export_to_png(self) -> str:
-        """PNGエクスポート（引数なし版）"""
-        try:
-            # ダミーデータを生成
-            data_points = self._generate_dummy_data()
-            
-            # 出力パスを生成
-            output_path = os.path.join(self.config.results_dir, f"clustering_map_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png")
-            os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            
-            # PNGエクスポート
-            success = self.export_png(data_points, output_path, "Clustering Map")
-            if success:
-                return output_path
-            else:
-                raise Exception("PNG export failed")
-                
-        except Exception as e:
-            logger.error(f"PNG export failed: {e}")
-            raise Exception(f"PNGエクスポートに失敗しました: {str(e)}")
+        """PNGエクスポート（引数なし版 - 無効化）"""
+        logger.warning("PNG export is disabled on Vercel to reduce package size")
+        raise Exception("PNG export is not supported on Vercel Serverless Functions")
 
     def _generate_dummy_data(self) -> List[DataPoint]:
         """ダミーデータを生成"""
