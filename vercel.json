@@ -2,6 +2,13 @@
   "version": 2,
   "buildCommand": "cd clustering-map-frontend && npm run build",
   "outputDirectory": "clustering-map-frontend/dist",
-  "installCommand": "cd clustering-map-frontend && npm install"
+  "installCommand": "cd clustering-map-frontend && npm install",
+  "env": {
+    "PYTHON_VERSION": "3.11",
+    "NODE_ENV": "production",
+    "VERCEL": "1",
+    "ENVIRONMENT": "production",
+    "LOG_LEVEL": "INFO"
+  }
 }
 
