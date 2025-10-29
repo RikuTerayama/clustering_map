@@ -5,7 +5,7 @@ dist/
 __pycache__/
 *.egg-info/
 
-# ドキュメント
+# ドキュメント（README.mdは除外しない）
 *.md
 !README.md
 
@@ -24,7 +24,7 @@ data/
 logs/
 tmp/
 
-# 古い構成
+# 古い構成（現在使用していない）
 app/
 frontend/
 
