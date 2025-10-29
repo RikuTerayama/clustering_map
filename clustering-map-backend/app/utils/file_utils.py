@@ -7,14 +7,55 @@ logger = logging.getLogger(__name__)
 
 
 def read_excel_file(file_path: str):
-    """Excelファイルを読み込む"""
+    """Excelファイルを読み込む（openpyxlのみ使用）"""
     try:
-        # 遅延インポートでファイルサイズを削減
-        import pandas as pd
-        # 複数のシートがある場合は最初のシートを読み込み
-        df = pd.read_excel(file_path, engine='openpyxl')
-        logger.info(f"Excel file loaded successfully: {len(df)} rows, {len(df.columns)} columns")
-        return df
+        from openpyxl import load_workbook
+        
+        # openpyxlでExcelファイルを読み込み
+        workbook = load_workbook(file_path, read_only=True)
+        worksheet = workbook.active
+        
+        # データを読み込み
+        data = []
+        headers = []
+        
+        # ヘッダー行を取得
+        for cell in worksheet[1]:
+            headers.append(cell.value if cell.value else f"Column_{len(headers)+1}")
+        
+        # データ行を取得
+        for row in worksheet.iter_rows(min_row=2, values_only=True):
+            if any(cell is not None for cell in row):  # 空行をスキップ
+                row_data = {}
+                for i, value in enumerate(row):
+                    if i < len(headers):
+                        row_data[headers[i]] = value
+                data.append(row_data)
+        
+        workbook.close()
+        
+        logger.info(f"Excel file loaded successfully: {len(data)} rows, {len(headers)} columns")
+        
+        # pandas DataFrame風のオブジェクトを作成
+        class SimpleDataFrame:
+            def __init__(self, data, columns):
+                self.data = data
+                self.columns = columns
+                self._len = len(data)
+            
+            def __len__(self):
+                return self._len
+            
+            def head(self, n=5):
+                return SimpleDataFrame(self.data[:n], self.columns)
+            
+            def to_dict(self, orient='records'):
+                if orient == 'records':
+                    return self.data
+                return {col: [row.get(col) for row in self.data] for col in self.columns}
+        
+        return SimpleDataFrame(data, headers)
+        
     except Exception as e:
         logger.error(f"Failed to read Excel file: {e}")
         raise ValueError(f"Excelファイルの読み込みに失敗しました: {e}")
