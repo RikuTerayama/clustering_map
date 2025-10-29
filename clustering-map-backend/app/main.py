@@ -113,7 +113,8 @@ async def health_check():
 async def download_template():
     """テンプレートファイルをダウンロード"""
     try:
-        import pandas as pd
+        from openpyxl import Workbook
+        from openpyxl.styles import Font, PatternFill, Alignment
         from io import BytesIO
         
         # 実際のビジネス文脈のサンプルデータを作成
@@ -130,35 +131,38 @@ async def download_template():
             '夜中や休日に緊急の連絡が来ることがあり、プライベートの時間が取れません。'
         ]
         
-        # DataFrameを作成
-        df = pd.DataFrame({'自由記述': sample_data})
+        # ワークブックを作成
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "アンケート結果"
         
-        # Excelファイルをメモリ上に作成
+        # ヘッダーを設定
+        ws['A1'] = '自由記述'
+        
+        # ヘッダーのスタイル設定
+        header_font = Font(bold=True, color="FFFFFF")
+        header_fill = PatternFill(start_color="366092", end_color="366092", fill_type="solid")
+        header_alignment = Alignment(horizontal="center", vertical="center")
+        
+        ws['A1'].font = header_font
+        ws['A1'].fill = header_fill
+        ws['A1'].alignment = header_alignment
+        
+        # サンプルデータを追加
+        for i, data in enumerate(sample_data, start=2):
+            ws[f'A{i}'] = data
+        
+        # 列幅を調整
+        ws.column_dimensions['A'].width = 80
+        
+        # データ行のスタイル設定
+        for row in ws.iter_rows(min_row=2):
+            for cell in row:
+                cell.alignment = Alignment(horizontal="left", vertical="top", wrap_text=True)
+        
+        # メモリ上に保存
         output = BytesIO()
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            df.to_excel(writer, sheet_name='アンケート結果', index=False)
-            
-            # ワークシートのスタイル設定
-            worksheet = writer.sheets['アンケート結果']
-            
-            # 列幅を調整
-            worksheet.column_dimensions['A'].width = 80
-            
-            # ヘッダーのスタイル設定
-            from openpyxl.styles import Font, PatternFill, Alignment
-            header_font = Font(bold=True, color="FFFFFF")
-            header_fill = PatternFill(start_color="366092", end_color="366092", fill_type="solid")
-            
-            for cell in worksheet[1]:
-                cell.font = header_font
-                cell.fill = header_fill
-                cell.alignment = Alignment(horizontal="center", vertical="center")
-            
-            # データ行のスタイル設定
-            for row in worksheet.iter_rows(min_row=2):
-                for cell in row:
-                    cell.alignment = Alignment(horizontal="left", vertical="top", wrap_text=True)
-        
+        wb.save(output)
         output.seek(0)
         
         return Response(
